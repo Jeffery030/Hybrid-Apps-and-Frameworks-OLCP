@@ -1,0 +1,56 @@
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Today's todos</Text>
+
+      <View style={styles.todo}>
+        <View style={styles.checkbox} />
+        <Text>Item 1</Text>
+      </View>
+
+      <View style={styles.todo}>
+        <View style={styles.checkbox} />
+        <Text>Item 2</Text>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 25,
+    backgroundColor: '#e5e5e5',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  todo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    padding: 12,
+    marginBottom: 10,
+    borderRadius: 5,
+  },
+  checkbox: {
+    width: 18,
+    height: 18,
+    borderWidth: 2,
+    borderColor: '#9ddff0',
+    marginRight: 10,
+  },
+});
+
+
+package.json
+{
+  "dependencies": {
+    "react-native-paper": "latest"
+  }
+}
