@@ -1,0 +1,57 @@
+import 'react-native-gesture-handler';
+import React from 'react';
+import { View, Text, Platform } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
+function Screen({ name }) {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>{name}</Text>
+    </View>
+  );
+}
+
+function Planets() {
+  return <Screen name="Planets Screen" />;
+}
+
+function Films() {
+  return <Screen name="Films Screen" />;
+}
+
+function Spaceships() {
+  return <Screen name="Spaceships Screen" />;
+}
+
+function Tabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Planets" component={Planets} />
+      <Tab.Screen name="Films" component={Films} />
+      <Tab.Screen name="Spaceships" component={Spaceships} />
+    </Tab.Navigator>
+  );
+}
+
+function Drawers() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="Planets" component={Planets} />
+      <Drawer.Screen name="Films" component={Films} />
+      <Drawer.Screen name="Spaceships" component={Spaceships} />
+    </Drawer.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      {Platform.OS === 'ios' ? <Tabs /> : <Drawers />}
+    </NavigationContainer>
+  );
+}
