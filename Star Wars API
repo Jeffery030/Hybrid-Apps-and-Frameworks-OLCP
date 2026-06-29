@@ -1,0 +1,93 @@
+import 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, Platform } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
+function ListScreen({ title, url, film }) {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    fetch(url)
+      .then(res => res.json())
+      .then(data => setItems(film ? data.result : data.results));
+  }, []);
+
+  return (
+    <View style={{ flex: 1, padding: 20 }}>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>
+        {title}
+      </Text>
+
+      <FlatList
+        data={items}
+        keyExtractor={(item) => item.uid}
+        renderItem={({ item }) => (
+          <Text style={{ fontSize: 18, padding: 8 }}>
+            {film ? item.properties.title : item.name}
+          </Text>
+        )}
+      />
+    </View>
+  );
+}
+
+function Planets() {
+  return (
+    <ListScreen
+      title="Planets"
+      url="https://www.swapi.tech/api/planets"
+    />
+  );
+}
+
+function Films() {
+  return (
+    <ListScreen
+      title="Films"
+      url="https://www.swapi.tech/api/films"
+      film={true}
+    />
+  );
+}
+
+function Spaceships() {
+  return (
+    <ListScreen
+      title="Spaceships"
+      url="https://www.swapi.tech/api/starships"
+    />
+  );
+}
+
+function Tabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Planets" component={Planets} />
+      <Tab.Screen name="Films" component={Films} />
+      <Tab.Screen name="Spaceships" component={Spaceships} />
+    </Tab.Navigator>
+  );
+}
+
+function Drawers() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="Planets" component={Planets} />
+      <Drawer.Screen name="Films" component={Films} />
+      <Drawer.Screen name="Spaceships" component={Spaceships} />
+    </Drawer.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      {Platform.OS === 'ios' ? <Tabs /> : <Drawers />}
+    </NavigationContainer>
+  );
+}
