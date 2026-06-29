@@ -1,0 +1,122 @@
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
+
+export default function App() {
+  const [todo, setTodo] = useState('');
+  const [todos, setTodos] = useState([
+    { id: '1', text: 'Item 1' },
+    { id: '2', text: 'Item 2' },
+  ]);
+
+  function addTodo() {
+    if (todo.trim() === '') return;
+
+    setTodos([
+      ...todos,
+      {
+        id: Date.now().toString(),
+        text: todo,
+      },
+    ]);
+
+    setTodo('');
+  }
+
+  function removeTodo(id) {
+    setTodos(todos.filter(item => item.id !== id));
+  }
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Today's todos</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Add a todo..."
+        value={todo}
+        onChangeText={setTodo}
+      />
+
+      <TouchableOpacity style={styles.button} onPress={addTodo}>
+        <Text style={styles.buttonText}>Add</Text>
+      </TouchableOpacity>
+
+      <FlatList
+        data={todos}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.todoItem}
+            onPress={() => removeTodo(item.id)}
+          >
+            <View style={styles.checkBox} />
+            <Text style={styles.todoText}>{item.text}</Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#e6e6e6',
+    paddingTop: 50,
+    paddingHorizontal: 15,
+  },
+
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+
+  input: {
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+
+  button: {
+    backgroundColor: '#4CAF50',
+    padding: 12,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+
+  todoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    padding: 12,
+    marginBottom: 8,
+  },
+
+  checkBox: {
+    width: 18,
+    height: 18,
+    borderWidth: 2,
+    borderColor: '#7dd3fc',
+    marginRight: 10,
+  },
+
+  todoText: {
+    fontSize: 16,
+  },
+});
